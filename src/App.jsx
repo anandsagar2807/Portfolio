@@ -294,7 +294,7 @@ function App() {
                 <div className="profile-photo-wrapper">
                   <div className="profile-glow" />
                   <div className="profile-photo-ring" />
-                  <img src="/profile.jpg" alt="Gurram Anand Sagar" className="profile-photo" />
+                  <img src="https://cdn.builder.io/api/v1/image/assets%2F11ba7d5ce9344242b5846257f257d0e8%2Fe110f31e4c684e96aecdb9a6bbf82078?format=webp&width=800&height=1200" alt="Gurram Anand Sagar" className="profile-photo" />
                 </div>
               </motion.div>
 
