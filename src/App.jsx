@@ -55,7 +55,7 @@ function Navbar() {
       className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b border-cyan-500/20"
       style={{ background: 'rgba(11, 15, 20, 0.8)' }}
     >
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center h-16">
         <motion.a
           href="#"
           className="text-2xl font-bold"
@@ -98,12 +98,12 @@ function Navbar() {
             className="md:hidden border-t border-cyan-500/20"
             style={{ background: 'rgba(11, 15, 20, 0.95)' }}
           >
-            <div className="px-6 py-4 flex flex-col gap-4">
+            <div className="px-4 sm:px-6 py-4 flex flex-col gap-3">
               {navItems.map((item) => (
                 <a
                   key={item}
                   href={`#${item.toLowerCase()}`}
-                  className="text-gray-300 hover:text-cyan-400 transition-colors"
+                  className="text-gray-300 hover:text-cyan-400 transition-colors text-sm lg:text-base"
                   onClick={() => setMobileOpen(false)}
                 >
                   {item}
@@ -119,20 +119,20 @@ function Navbar() {
 
 function Hero() {
   return (
-    <section id="home" className="min-h-screen flex items-center pt-20">
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 px-6">
+    <section id="home" className="min-h-screen w-full flex items-center justify-center pt-20 pb-10">
+      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 px-4 sm:px-6 lg:px-8">
         {/* Left Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="flex flex-col justify-center"
+          className="flex flex-col justify-center space-y-6"
         >
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-cyan-400 text-sm font-mono mb-4"
+            className="text-cyan-400 text-sm font-mono"
           >
             &gt; Hello, World
           </motion.p>
@@ -141,7 +141,7 @@ function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-5xl lg:text-6xl font-bold mb-4 text-white"
+            className="text-5xl lg:text-6xl font-bold text-white leading-tight"
           >
             I'm a Software Developer
           </motion.h1>
@@ -150,7 +150,7 @@ function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="text-cyan-300 text-lg mb-6"
+            className="text-cyan-300 text-lg font-medium"
           >
             Building digital experiences
           </motion.p>
@@ -159,7 +159,7 @@ function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="text-gray-400 text-lg mb-10 max-w-md"
+            className="text-gray-400 text-base lg:text-lg leading-relaxed max-w-lg"
           >
             Crafting exceptional digital products with modern technologies. Full-stack developer, cloud enthusiast, and problem solver.
           </motion.p>
@@ -169,7 +169,7 @@ function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="flex gap-6 flex-wrap"
+            className="flex gap-4 flex-wrap pt-4"
           >
             <motion.a
               href="#projects"
@@ -194,19 +194,19 @@ function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
-            className="flex gap-12 mt-16"
+            className="flex gap-8 lg:gap-12 pt-8"
           >
-            <div>
-              <p className="text-3xl font-bold text-cyan-400">100+</p>
-              <p className="text-gray-400 text-sm">LeetCode Problems</p>
+            <div className="flex flex-col">
+              <p className="text-3xl lg:text-4xl font-bold text-cyan-400">100+</p>
+              <p className="text-gray-400 text-xs lg:text-sm mt-2">LeetCode Problems</p>
             </div>
-            <div>
-              <p className="text-3xl font-bold text-cyan-400">8.22</p>
-              <p className="text-gray-400 text-sm">CGPA (B.Tech)</p>
+            <div className="flex flex-col">
+              <p className="text-3xl lg:text-4xl font-bold text-cyan-400">8.22</p>
+              <p className="text-gray-400 text-xs lg:text-sm mt-2">CGPA (B.Tech)</p>
             </div>
-            <div>
-              <p className="text-3xl font-bold text-cyan-400">2+</p>
-              <p className="text-gray-400 text-sm">Years Experience</p>
+            <div className="flex flex-col">
+              <p className="text-3xl lg:text-4xl font-bold text-cyan-400">2+</p>
+              <p className="text-gray-400 text-xs lg:text-sm mt-2">Years Experience</p>
             </div>
           </motion.div>
         </motion.div>
@@ -216,12 +216,12 @@ function Hero() {
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="flex items-center justify-center"
+          className="flex items-center justify-center h-full"
         >
           <motion.div
             animate={{ y: [0, -20, 0] }}
             transition={{ repeat: Infinity, duration: 4 }}
-            className="relative"
+            className="relative w-full flex justify-center"
           >
             {/* Neon Glow Background */}
             <div className="absolute -inset-4 rounded-2xl opacity-75 blur-xl" style={{
@@ -230,7 +230,7 @@ function Hero() {
             }} />
 
             {/* Image Container */}
-            <div className="relative rounded-2xl overflow-hidden border-2 border-cyan-500/50 w-80 h-96 bg-gradient-to-br from-cyan-500/10 to-blue-500/10">
+            <div className="relative rounded-2xl overflow-hidden border-2 border-cyan-500/50 w-64 sm:w-72 lg:w-80 h-80 sm:h-96 bg-gradient-to-br from-cyan-500/10 to-blue-500/10">
               <img
                 src="https://cdn.builder.io/api/v1/image/assets%2F11ba7d5ce9344242b5846257f257d0e8%2Fe110f31e4c684e96aecdb9a6bbf82078?format=webp&width=800&height=1200"
                 alt="Developer"
@@ -253,32 +253,33 @@ function Hero() {
 
 function About() {
   return (
-    <section id="about" className="py-20 px-6">
-      <div className="max-w-7xl mx-auto">
+    <section id="about" className="w-full py-20 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-7xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-4xl font-bold text-white mb-12 text-center"
+          className="text-4xl lg:text-5xl font-bold text-white mb-16 text-center"
         >
           About <span className="text-cyan-400">Me</span>
         </motion.h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
+            className="space-y-6"
           >
-            <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            <p className="text-gray-300 text-base lg:text-lg leading-relaxed">
               I'm a B.Tech Computer Science Engineering student from Institute of Aeronautical Engineering, passionate about building scalable web applications and solving complex problems.
             </p>
-            <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            <p className="text-gray-300 text-base lg:text-lg leading-relaxed">
               With hands-on experience in full-stack development, I specialize in creating responsive and user-friendly digital experiences. I'm certified in Oracle Cloud and Azure, with expertise in both frontend and backend technologies.
             </p>
-            <p className="text-gray-300 text-lg leading-relaxed">
+            <p className="text-gray-300 text-base lg:text-lg leading-relaxed">
               I love collaborating with teams, learning new technologies, and contributing to projects that make a real impact.
             </p>
           </motion.div>
@@ -289,7 +290,7 @@ function About() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="space-y-6"
+            className="space-y-5"
           >
             {[
               { label: 'Education', value: 'B.Tech CSE (IARE)' },
@@ -315,18 +316,18 @@ function About() {
 
 function Skills() {
   return (
-    <section id="skills" className="py-20 px-6">
-      <div className="max-w-7xl mx-auto">
+    <section id="skills" className="w-full py-20 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-7xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-4xl font-bold text-white mb-12 text-center"
+          className="text-4xl lg:text-5xl font-bold text-white mb-16 text-center"
         >
           Technical <span className="text-cyan-400">Skills</span>
         </motion.h2>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
           {SKILLS.map((skill, idx) => (
             <motion.div
               key={idx}
@@ -352,18 +353,18 @@ function Skills() {
 
 function Projects() {
   return (
-    <section id="projects" className="py-20 px-6">
-      <div className="max-w-7xl mx-auto">
+    <section id="projects" className="w-full py-20 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-7xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-4xl font-bold text-white mb-12 text-center"
+          className="text-4xl lg:text-5xl font-bold text-white mb-16 text-center"
         >
           Featured <span className="text-cyan-400">Projects</span>
         </motion.h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {PROJECTS.map((project, idx) => (
             <motion.div
               key={idx}
@@ -372,21 +373,21 @@ function Projects() {
               viewport={{ once: true }}
               transition={{ delay: idx * 0.2 }}
               whileHover={{ y: -10 }}
-              className="group rounded-lg border border-cyan-500/30 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-md p-8 hover:border-cyan-500/50 transition-all overflow-hidden relative"
+              className="group rounded-lg border border-cyan-500/30 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-md p-6 lg:p-8 hover:border-cyan-500/50 transition-all overflow-hidden relative flex flex-col h-full"
             >
               {/* Glow Effect */}
               <div className="absolute -inset-32 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 blur-3xl transition-opacity duration-300 -z-10" />
 
-              <h3 className="text-xl font-bold text-white mb-2">{project.name}</h3>
-              <p className="text-cyan-400 text-sm font-semibold mb-4">{project.subtitle}</p>
-              <p className="text-gray-300 mb-6 leading-relaxed">{project.desc}</p>
+              <h3 className="text-xl lg:text-2xl font-bold text-white mb-2">{project.name}</h3>
+              <p className="text-cyan-400 text-xs lg:text-sm font-semibold mb-4">{project.subtitle}</p>
+              <p className="text-gray-300 text-sm lg:text-base mb-6 leading-relaxed flex-grow">{project.desc}</p>
 
               {/* Tech Stack */}
               <div className="flex flex-wrap gap-2 mb-6">
                 {project.stack.map((tech) => (
                   <span
                     key={tech}
-                    className="text-xs px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30"
+                    className="text-xs px-2.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30"
                   >
                     {tech}
                   </span>
@@ -394,7 +395,7 @@ function Projects() {
               </div>
 
               {/* Buttons */}
-              <div className="flex gap-4">
+              <div className="flex gap-4 mt-auto">
                 <motion.a
                   href={project.github}
                   whileHover={{ scale: 1.05 }}
@@ -428,13 +429,13 @@ function Contact() {
   };
 
   return (
-    <section id="contact" className="py-20 px-6">
-      <div className="max-w-2xl mx-auto">
+    <section id="contact" className="w-full py-20 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-2xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-4xl font-bold text-white mb-4 text-center"
+          className="text-4xl lg:text-5xl font-bold text-white mb-6 text-center"
         >
           Get in <span className="text-cyan-400">Touch</span>
         </motion.h2>
@@ -443,7 +444,7 @@ function Contact() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-gray-400 text-center mb-12 text-lg"
+          className="text-gray-400 text-center mb-12 text-base lg:text-lg"
         >
           Let's discuss your next project or opportunity
         </motion.p>
@@ -453,10 +454,10 @@ function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           onSubmit={handleSubmit}
-          className="space-y-6 p-8 rounded-lg border border-cyan-500/30 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-md"
+          className="space-y-6 p-6 lg:p-8 rounded-lg border border-cyan-500/30 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-md w-full"
         >
-          <div>
-            <label htmlFor="email" className="block text-white mb-2 font-semibold">
+          <div className="space-y-2">
+            <label htmlFor="email" className="block text-white text-sm lg:text-base font-semibold">
               Email Address
             </label>
             <input
@@ -464,21 +465,21 @@ function Contact() {
               id="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-4 py-3 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all"
+              className="w-full px-4 py-3 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all text-sm lg:text-base"
               placeholder="your@email.com"
               required
             />
           </div>
 
-          <div>
-            <label htmlFor="message" className="block text-white mb-2 font-semibold">
+          <div className="space-y-2">
+            <label htmlFor="message" className="block text-white text-sm lg:text-base font-semibold">
               Message
             </label>
             <textarea
               id="message"
               value={formData.message}
               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-              className="w-full px-4 py-3 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all resize-none"
+              className="w-full px-4 py-3 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all resize-none text-sm lg:text-base"
               placeholder="Your message here..."
               rows="6"
               required
@@ -500,7 +501,7 @@ function Contact() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="flex justify-center gap-8 mt-12"
+          className="flex justify-center gap-6 lg:gap-8 mt-12"
         >
           {[
             { icon: <Github size={24} />, href: '#', label: 'GitHub' },
@@ -525,12 +526,12 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer className="border-t border-cyan-500/20 py-8 px-6" style={{ background: 'rgba(11, 15, 20, 0.5)' }}>
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-        <p className="text-gray-400">
+    <footer className="w-full border-t border-cyan-500/20 py-8 px-4 sm:px-6 lg:px-8" style={{ background: 'rgba(11, 15, 20, 0.5)' }}>
+      <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+        <p className="text-gray-400 text-sm lg:text-base text-center md:text-left">
           Designed & Built by <span className="text-cyan-400 font-semibold">Anand Sagar Gurram</span>
         </p>
-        <p className="text-gray-500 text-sm">© {new Date().getFullYear()} All rights reserved.</p>
+        <p className="text-gray-500 text-xs lg:text-sm">© {new Date().getFullYear()} All rights reserved.</p>
       </div>
     </footer>
   );
