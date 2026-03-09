@@ -203,7 +203,7 @@ function Hero() {
             </p>
             <div>
               <h1 className="text-6xl md:text-7xl font-black leading-tight tracking-tight" style={{ color: COLORS.text }}>
-                I'm <span style={{ color: COLORS.primary }}>koja</span>
+                I'm <span style={{ color: COLORS.primary }}>Anand</span>
               </h1>
               <h2 className="text-5xl md:text-6xl font-black leading-tight tracking-tight" style={{ color: COLORS.text }}>
                 Software Developer
@@ -322,7 +322,7 @@ function Hero() {
             >
               <img
                 src="https://cdn.builder.io/api/v1/image/assets%2F11ba7d5ce9344242b5846257f257d0e8%2Fe110f31e4c684e96aecdb9a6bbf82078?format=webp&width=800&height=1200"
-                alt="koja - Developer"
+                alt="Anand Sagar Gurram - Developer"
                 className="w-full h-full object-cover"
               />
             </div>
@@ -706,7 +706,7 @@ function Footer() {
     <footer className="w-full border-t py-8 px-4 sm:px-6 lg:px-12" style={{ borderColor: `${COLORS.primary}15`, background: COLORS.bg }}>
       <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row justify-center md:justify-between items-center gap-4 md:gap-6">
         <p className="text-xs sm:text-sm md:text-base text-center md:text-left font-medium" style={{ color: COLORS.textMuted }}>
-          Designed & Built by <span className="font-bold" style={{ color: COLORS.primary }}>koja</span>
+          Designed & Built by <span className="font-bold" style={{ color: COLORS.primary }}>Anand Sagar Gurram</span>
         </p>
         <p className="text-xs md:text-sm" style={{ color: COLORS.textMuted }}>© {new Date().getFullYear()} All rights reserved.</p>
       </div>
