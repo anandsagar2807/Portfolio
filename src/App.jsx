@@ -202,12 +202,15 @@ function Hero() {
               &gt; Hello, World
             </p>
             <div>
-              <h1 className="text-6xl md:text-7xl font-black leading-tight tracking-tight" style={{ color: COLORS.text }}>
-                I'm <span style={{ color: COLORS.primary }}>Anand</span>
+              <h1 className="text-5xl md:text-6xl font-black leading-tight tracking-tight" style={{ color: COLORS.text }}>
+                I'm <span style={{ color: COLORS.primary }}>Anand Sagar</span>
               </h1>
               <h2 className="text-5xl md:text-6xl font-black leading-tight tracking-tight" style={{ color: COLORS.text }}>
-                Software Developer
+                <span style={{ color: COLORS.primary }}>Gurram</span>
               </h2>
+              <h3 className="text-4xl md:text-5xl font-black leading-tight tracking-tight mt-2" style={{ color: COLORS.text }}>
+                Software Developer
+              </h3>
             </div>
           </motion.div>
 
