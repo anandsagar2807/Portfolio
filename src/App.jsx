@@ -163,7 +163,7 @@ function Navbar() {
 
 function Hero() {
   return (
-    <section id="home" className="relative w-full flex items-center justify-center min-h-screen pt-24 pb-16 md:pt-32 md:pb-20 overflow-hidden">
+    <section id="home" className="relative w-full flex items-center justify-center min-h-screen pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden">
       {/* Gradient Background Elements */}
       <div className="absolute top-32 -left-40 w-80 h-80 rounded-full blur-3xl opacity-25 animate-pulse" style={{ background: `${COLORS.primary}40` }} />
       <div className="absolute bottom-40 -right-40 w-80 h-80 rounded-full blur-3xl opacity-25 animate-pulse" style={{ background: `${COLORS.secondary}40` }} />
@@ -349,7 +349,7 @@ function Hero() {
 
 function About() {
   return (
-    <section id="about" className="w-full relative py-24 md:py-32 px-4 sm:px-6 lg:px-12">
+    <section id="about" className="w-full relative py-32 md:py-40 lg:py-48 px-4 sm:px-6 lg:px-12">
       {/* Background Glow */}
       <div className="absolute top-32 right-0 w-96 h-96 rounded-full blur-3xl opacity-20 pointer-events-none" style={{ background: `${COLORS.secondary}40` }} />
 
@@ -426,7 +426,7 @@ function About() {
 
 function Skills() {
   return (
-    <section id="skills" className="w-full relative py-24 md:py-32 px-4 sm:px-6 lg:px-12">
+    <section id="skills" className="w-full relative py-32 md:py-40 lg:py-48 px-4 sm:px-6 lg:px-12">
       {/* Background Glow */}
       <div className="absolute top-32 -left-40 w-80 h-80 rounded-full blur-3xl opacity-20 pointer-events-none" style={{ background: `${COLORS.primary}40` }} />
 
@@ -479,7 +479,7 @@ function Skills() {
 
 function Projects() {
   return (
-    <section id="projects" className="w-full relative py-24 md:py-32 px-4 sm:px-6 lg:px-12">
+    <section id="projects" className="w-full relative py-32 md:py-40 lg:py-48 px-4 sm:px-6 lg:px-12">
       {/* Background Glow */}
       <div className="absolute top-32 -right-40 w-96 h-96 rounded-full blur-3xl opacity-20 pointer-events-none" style={{ background: `${COLORS.secondary}40` }} />
 
@@ -582,7 +582,7 @@ function Contact() {
   };
 
   return (
-    <section id="contact" className="w-full relative py-24 md:py-32 px-4 sm:px-6 lg:px-12">
+    <section id="contact" className="w-full relative py-32 md:py-40 lg:py-48 px-4 sm:px-6 lg:px-12">
       {/* Background Glow */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full blur-3xl opacity-20 pointer-events-none" style={{ background: `${COLORS.primary}40` }} />
 
