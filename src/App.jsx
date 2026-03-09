@@ -1,218 +1,113 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
-import {
-  Github, Linkedin, Mail, Phone, ExternalLink,
-  Code2, Database, Layout, Server, Award, ChevronDown,
-  Menu, X, MapPin, Calendar, ArrowUpRight, Sparkles,
-  GraduationCap, Briefcase, FolderGit2, ShieldCheck, Send,
-  Download, Eye, Star, Trophy, Zap, Globe, Terminal,
-  Heart, Coffee, Clock, TrendingUp, Users, BookOpen
-} from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X, Github, Linkedin, Mail, ExternalLink, ArrowRight } from 'lucide-react';
 
-/* ========== DATA ========== */
-const NAV_LINKS = [
-  { id: 'about', label: 'About' },
-  { id: 'education', label: 'Education' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'certifications', label: 'Certifications' },
-  { id: 'contact', label: 'Contact' },
-];
-
-const SKILLS = {
-  Languages: { items: ['Java', 'Python', 'JavaScript'], color: '#f472b6', icon: Terminal },
-  Web: { items: ['HTML5', 'CSS3', 'React.js', 'Node.js', 'Express.js', 'Angular', '.NET'], color: '#60a5fa', icon: Globe },
-  Databases: { items: ['MySQL', 'MongoDB', 'Oracle Autonomous DB'], color: '#34d399', icon: Database },
-  Cloud: { items: ['Oracle Cloud (OCI AI Certified)', 'Azure Fundamentals'], color: '#fb923c', icon: Server },
-  Core: { items: ['Data Structures', 'OOP', 'DBMS', 'OS', 'Computer Networks'], color: '#a78bfa', icon: BookOpen },
-};
-
-const INTERNSHIPS = [
-  {
-    company: 'Armoured Vehicles Nigam Limited',
-    location: 'Hyderabad',
-    role: 'Full Stack Web Developer Intern',
-    period: 'April 2025 – June 2025',
-    points: [
-      'Developed a Cyber Security Portal using PHP and JavaScript to enhance organizational security monitoring.',
-      'Integrated backend server for secure employee data storage with role-based access control.',
-    ],
-  },
-  {
-    company: 'Octacomm Technologies',
-    location: 'Hyderabad',
-    role: 'Full Stack Developer Intern',
-    period: 'April 2024 – May 2024',
-    points: [
-      'Built a real-time news community portal using React.js with live content updates.',
-      'Improved UI responsiveness and frontend performance, achieving 40% faster load times.',
-    ],
-  },
+// ========== DATA ==========
+const SKILLS = [
+  { name: 'Java', icon: '☕' },
+  { name: 'Python', icon: '🐍' },
+  { name: 'React', icon: '⚛️' },
+  { name: 'Node.js', icon: '📦' },
+  { name: 'Docker', icon: '🐳' },
+  { name: 'Kubernetes', icon: '☸️' },
+  { name: 'SQL', icon: '🗄️' },
+  { name: 'Git', icon: '🔧' },
 ];
 
 const PROJECTS = [
   {
     name: 'AquaCON',
     subtitle: 'Water Conservation Website',
-    desc: 'Developed an AI-powered web application that detects water wastage from images and generates automated analytical reports for conservation tracking.',
+    desc: 'AI-powered web application detecting water wastage from images with automated analytical reports.',
     stack: ['TypeScript', 'Node.js', 'Express.js', 'MongoDB'],
-    color: '#3b82f6',
-    icon: Layout,
+    github: '#',
+    demo: '#'
   },
   {
     name: 'SkillLens',
     subtitle: 'AI-Based Skill Gap Identifier',
-    desc: 'Built an NLP-based system to compare resumes with job descriptions and identify skill gaps, providing actionable upskilling recommendations.',
+    desc: 'NLP-based system comparing resumes with job descriptions and identifying skill gaps.',
     stack: ['JavaScript', 'NLP', 'React'],
-    color: '#8b5cf6',
-    icon: Code2,
+    github: '#',
+    demo: '#'
   },
   {
     name: 'TrackZEN',
     subtitle: 'AI Powered Health Recommender',
-    desc: 'AI-powered health recommendation system analyzing lifestyle habits and health metrics to deliver personalized wellness and preventive care suggestions.',
+    desc: 'Health recommendation system analyzing lifestyle habits with personalized wellness suggestions.',
     stack: ['Python', 'Machine Learning', 'Flask'],
-    color: '#06b6d4',
-    icon: Database,
+    github: '#',
+    demo: '#'
   },
 ];
 
-const CERTS = [
-  { name: 'Oracle Cloud Infrastructure 2025 Certified AI Foundations Associate', org: 'Oracle', color: '#ef4444' },
-  { name: 'Certified Young Professional', org: 'TCS', color: '#8b5cf6' },
-  { name: 'Data Structures and Backend with Java', org: 'Coursera', color: '#3b82f6' },
-  { name: 'Gen AI in Data Analysis', org: 'Coursera', color: '#3b82f6' },
-  { name: 'Microsoft Azure Cloud Certification', org: 'Microsoft', color: '#06b6d4' },
-  { name: 'Web Development (HTML, CSS, JavaScript, .NET)', org: 'Infosys', color: '#22c55e' },
-];
-
-const TYPING_ROLES = ['Full Stack Developer', 'Cloud Enthusiast', 'Problem Solver', 'OCI AI Certified'];
-
-const STATS = [
-  { icon: Code2, label: 'LeetCode', value: 100, suffix: '+', sub: 'Problems Solved', color: '#fbbf24' },
-  { icon: Trophy, label: 'HackerRank', value: 30, suffix: '+', sub: '4 Badges', color: '#34d399' },
-  { icon: Star, label: 'CGPA', value: 8.22, suffix: '', sub: 'B.Tech CSE', color: '#60a5fa', isDecimal: true },
-  { icon: Briefcase, label: 'Internships', value: 2, suffix: '', sub: 'Completed', color: '#f472b6' },
-  { icon: Award, label: 'Certifications', value: 6, suffix: '+', sub: 'Professional', color: '#a78bfa' },
-  { icon: FolderGit2, label: 'Projects', value: 3, suffix: '+', sub: 'Built & Deployed', color: '#fb923c' },
-];
-
-/* ========== STYLES ========== */
-const S = {
-  container: { width: '100%', maxWidth: '1200px', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '24px', paddingRight: '24px' },
-  fullSection: { minHeight: '100vh', display: 'flex', alignItems: 'center', position: 'relative', width: '100%', paddingTop: '80px', paddingBottom: '80px' },
-  sectionDivider: { width: '100%', maxWidth: '1200px', height: '1px', margin: '0 auto', background: 'linear-gradient(90deg, transparent, rgba(59,130,246,0.2), transparent)' },
-};
-
-/* ========== HOOKS ========== */
-function useTypingEffect(words, typingSpeed = 80, deletingSpeed = 50, pauseTime = 2000) {
-  const [text, setText] = useState('');
-  const [wordIndex, setWordIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  useEffect(() => {
-    const currentWord = words[wordIndex];
-    let timeout;
-    if (!isDeleting && text === currentWord) {
-      timeout = setTimeout(() => setIsDeleting(true), pauseTime);
-    } else if (isDeleting && text === '') {
-      setIsDeleting(false);
-      setWordIndex((prev) => (prev + 1) % words.length);
-    } else {
-      timeout = setTimeout(() => {
-        setText(currentWord.substring(0, text.length + (isDeleting ? -1 : 1)));
-      }, isDeleting ? deletingSpeed : typingSpeed);
-    }
-    return () => clearTimeout(timeout);
-  }, [text, wordIndex, isDeleting, words, typingSpeed, deletingSpeed, pauseTime]);
-  return text;
-}
-
-function useActiveSection() {
-  const [active, setActive] = useState('about');
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => { entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); }); },
-      { rootMargin: '-40% 0px -55% 0px' }
-    );
-    NAV_LINKS.forEach(({ id }) => { const el = document.getElementById(id); if (el) observer.observe(el); });
-    return () => observer.disconnect();
-  }, []);
-  return active;
-}
-
-function useCounter(end, duration = 2000, isDecimal = false) {
-  const [count, setCount] = useState(0);
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
-  useEffect(() => {
-    if (!inView) return;
-    let start = 0;
-    const step = end / (duration / 16);
-    const timer = setInterval(() => {
-      start += step;
-      if (start >= end) { setCount(end); clearInterval(timer); }
-      else setCount(isDecimal ? parseFloat(start.toFixed(2)) : Math.floor(start));
-    }, 16);
-    return () => clearInterval(timer);
-  }, [inView, end, duration, isDecimal]);
-  return [ref, count];
-}
-
-/* ========== VARIANTS ========== */
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.6, delay: i * 0.1, ease: [0.25, 0.46, 0.45, 0.94] } }),
-};
-const fadeLeft = {
-  hidden: { opacity: 0, x: -40 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: 'easeOut' } },
-};
-const fadeRight = {
-  hidden: { opacity: 0, x: 40 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: 'easeOut' } },
-};
-const stagger = { visible: { transition: { staggerChildren: 0.1 } } };
-
-/* ========== COMPONENTS ========== */
+// ========== COMPONENTS ==========
 
 function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const activeSection = useActiveSection();
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+
+  const navItems = ['Home', 'About', 'Skills', 'Projects', 'Contact'];
 
   return (
-    <motion.nav initial={{ y: -80 }} animate={{ y: 0 }} transition={{ duration: 0.6 }}
-      style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, transition: 'all 0.3s ease',
-        ...(scrolled ? { background: 'rgba(2,6,23,0.85)', backdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(255,255,255,0.06)' } : {}),
-      }}>
-      <div style={{ ...S.container, height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <a href="#about" style={{ textDecoration: 'none', fontSize: '1.25rem', fontWeight: 700, letterSpacing: '-0.025em' }}>
-          <span className="text-gradient">AS</span><span style={{ color: '#64748b', fontWeight: 300, marginLeft: '4px' }}>.</span>
-        </a>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }} className="desktop-nav">
-          {NAV_LINKS.map(({ id, label }) => (
-            <a key={id} href={`#${id}`} className={`nav-link ${activeSection === id ? 'active' : ''}`} style={{ textDecoration: 'none' }}>{label}</a>
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b border-cyan-500/20"
+      style={{ background: 'rgba(11, 15, 20, 0.8)' }}
+    >
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center h-16">
+        <motion.a
+          href="#"
+          className="text-2xl font-bold"
+          style={{ background: 'linear-gradient(135deg, #00d4ff, #0099ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+          whileHover={{ scale: 1.1 }}
+        >
+          AS
+        </motion.a>
+
+        {/* Desktop Menu */}
+        <div className="hidden md:flex gap-8">
+          {navItems.map((item) => (
+            <motion.a
+              key={item}
+              href={`#${item.toLowerCase()}`}
+              className="text-gray-300 hover:text-cyan-400 transition-colors text-sm font-medium"
+              whileHover={{ color: '#00d4ff' }}
+            >
+              {item}
+            </motion.a>
           ))}
         </div>
-        <button className="mobile-toggle" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle menu"
-          style={{ background: 'none', border: 'none', color: '#cbd5e1', cursor: 'pointer' }}>
-          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="md:hidden text-cyan-400"
+        >
+          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
+
+      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
-            style={{ overflow: 'hidden', background: 'rgba(2,6,23,0.95)', backdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', padding: '16px 24px', gap: '12px' }}>
-              {NAV_LINKS.map(({ id, label }) => (
-                <a key={id} href={`#${id}`} className={`nav-link ${activeSection === id ? 'active' : ''}`}
-                  onClick={() => setMobileOpen(false)} style={{ textDecoration: 'none' }}>{label}</a>
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden border-t border-cyan-500/20"
+            style={{ background: 'rgba(11, 15, 20, 0.95)' }}
+          >
+            <div className="px-4 sm:px-6 py-4 flex flex-col gap-3">
+              {navItems.map((item) => (
+                <a
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
+                  className="text-gray-300 hover:text-cyan-400 transition-colors text-sm lg:text-base"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {item}
+                </a>
               ))}
             </div>
           </motion.div>
@@ -222,368 +117,457 @@ function Navbar() {
   );
 }
 
-function SectionTitle({ title, icon: Icon, subtitle }) {
+function Hero() {
   return (
-    <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} style={{ marginBottom: '56px', textAlign: 'center' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '8px' }}>
-        <div className="glass-card" style={{ width: '44px', height: '44px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#60a5fa' }}>
-          <Icon size={22} />
-        </div>
-        <h2 style={{ fontSize: 'clamp(2rem, 5vw, 2.75rem)', fontWeight: 800, letterSpacing: '-0.03em', color: '#fff', margin: 0 }}>{title}</h2>
-      </div>
-      {subtitle && <p style={{ color: '#64748b', fontSize: '1rem', maxWidth: '500px', margin: '8px auto 0' }}>{subtitle}</p>}
-    </motion.div>
-  );
-}
+    <section id="home" className="min-h-screen w-full flex items-center justify-center pt-20 pb-10">
+      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 px-4 sm:px-6 lg:px-8">
+        {/* Left Content */}
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="flex flex-col justify-center space-y-6"
+        >
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-cyan-400 text-sm font-mono"
+          >
+            &gt; Hello, World
+          </motion.p>
 
-function AnimatedCounter({ stat }) {
-  const [ref, count] = useCounter(stat.value, 2000, stat.isDecimal);
-  const Icon = stat.icon;
-  return (
-    <motion.div ref={ref} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
-      className="glass-card animated-border"
-      style={{ borderRadius: '16px', padding: '24px', textAlign: 'center', minWidth: '160px', flex: '1 1 160px' }}>
-      <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: `${stat.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
-        <Icon size={20} style={{ color: stat.color }} />
-      </div>
-      <p style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}>{stat.label}</p>
-      <p className="text-gradient counter-value" style={{ fontSize: '2rem', fontWeight: 800 }}>{count}{stat.suffix}</p>
-      <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px' }}>{stat.sub}</p>
-    </motion.div>
-  );
-}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-5xl lg:text-6xl font-bold text-white leading-tight"
+          >
+            I'm a Software Developer
+          </motion.h1>
 
-function Particles() {
-  const [particles] = useState(() => Array.from({ length: 25 }, (_, i) => ({
-    id: i, left: Math.random() * 100, duration: 15 + Math.random() * 20, delay: Math.random() * 15, size: 2 + Math.random() * 2,
-  })));
-  return (
-    <div style={{ position: 'fixed', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
-      {particles.map((p) => (
-        <div key={p.id} className="particle"
-          style={{ left: `${p.left}%`, bottom: '-10px', width: `${p.size}px`, height: `${p.size}px`, animationDuration: `${p.duration}s`, animationDelay: `${p.delay}s` }} />
-      ))}
-    </div>
-  );
-}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="text-cyan-300 text-lg font-medium"
+          >
+            Building digital experiences
+          </motion.p>
 
-/* ========== MAIN APP ========== */
-function App() {
-  const typedText = useTypingEffect(TYPING_ROLES, 80, 50, 2200);
-  const { scrollYProgress } = useScroll();
-  const progressWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="text-gray-400 text-base lg:text-lg leading-relaxed max-w-lg"
+          >
+            Crafting exceptional digital products with modern technologies. Full-stack developer, cloud enthusiast, and problem solver.
+          </motion.p>
 
-  return (
-    <div style={{ minHeight: '100vh', position: 'relative', overflowX: 'hidden', width: '100%' }}>
-      <motion.div style={{ position: 'fixed', top: 0, left: 0, height: '3px', zIndex: 60, width: progressWidth,
-        background: 'linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899)' }} />
-      <Navbar />
-      <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
-        <div className="blob blob-1" /><div className="blob blob-2" /><div className="blob blob-3" />
-      </div>
-      <Particles />
+          {/* Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="flex gap-4 flex-wrap pt-4"
+          >
+            <motion.a
+              href="#projects"
+              whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(0, 212, 255, 0.5)' }}
+              whileTap={{ scale: 0.95 }}
+              className="px-8 py-3 rounded-lg font-semibold text-white border-2 border-cyan-400 hover:bg-cyan-400/10 transition-all"
+            >
+              View Projects <ArrowRight className="inline ml-2" size={18} />
+            </motion.a>
+            <motion.a
+              href="#contact"
+              whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(0, 153, 255, 0.5)' }}
+              whileTap={{ scale: 0.95 }}
+              className="px-8 py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 transition-all"
+            >
+              Get in Touch
+            </motion.a>
+          </motion.div>
 
-      <div style={{ position: 'relative', zIndex: 10, width: '100%' }}>
-
-        {/* ═══════════ HERO / ABOUT ═══════════ */}
-        <section id="about" style={S.fullSection}>
-          <div style={{ ...S.container, width: '100%' }}>
-            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: '60px' }}>
-              {/* Profile Photo */}
-              <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }}>
-                <div className="profile-photo-wrapper">
-                  <div className="profile-glow" />
-                  <div className="profile-photo-ring" />
-                  <img src="/profile.jpg" alt="Gurram Anand Sagar" className="profile-photo" />
-                </div>
-              </motion.div>
-
-              {/* Left content */}
-              <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}
-                style={{ flex: '1 1 480px', minWidth: 0 }}>
-                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-                  className="glass" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 500, color: '#94a3b8', marginBottom: '24px' }}>
-                  <Sparkles size={12} style={{ color: '#fbbf24' }} /><span>Available for Internships & Collaborations</span>
-                </motion.div>
-
-                <h1 style={{ fontSize: 'clamp(2.5rem, 7vw, 4.5rem)', fontWeight: 900, letterSpacing: '-0.04em', color: '#fff', lineHeight: 1.1, marginBottom: '8px' }}>
-                  Gurram
-                </h1>
-                <h1 style={{ fontSize: 'clamp(2.5rem, 7vw, 4.5rem)', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1.1, marginBottom: '24px' }}>
-                  <span className="text-gradient">Anand Sagar</span>
-                </h1>
-
-                <div style={{ fontSize: 'clamp(1rem, 2.5vw, 1.25rem)', color: '#94a3b8', fontWeight: 300, marginBottom: '28px', height: '32px' }}>
-                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.95em' }}>{typedText}</span>
-                  <span className="typing-cursor" />
-                </div>
-
-                <p style={{ fontSize: '0.95rem', color: '#94a3b8', lineHeight: 1.8, maxWidth: '520px', marginBottom: '32px' }}>
-                  B.Tech Computer Science Engineering student passionate about building scalable web applications
-                  and solving complex problems. Oracle Cloud & Azure certified with hands-on experience in
-                  full-stack development.
-                </p>
-
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginBottom: '32px' }}>
-                  {[
-                    { href: 'mailto:23951A050P@iare.ac.in', icon: <Mail size={15} />, text: 'Email' },
-                    { href: 'tel:+919493086760', icon: <Phone size={15} />, text: '9493086760' },
-                    { href: '#', icon: <Linkedin size={15} />, text: 'LinkedIn', color: '#60a5fa' },
-                    { href: '#', icon: <Github size={15} />, text: 'GitHub' },
-                  ].map((link, i) => (
-                    <a key={i} href={link.href} className="glass"
-                      style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', borderRadius: '12px', fontSize: '0.875rem', fontWeight: 500, color: link.color || '#cbd5e1', textDecoration: 'none', transition: 'all 0.3s ease' }}>
-                      {link.icon} {link.text}
-                    </a>
-                  ))}
-                </div>
-
-                <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 2 }}
-                  style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.75rem', color: '#475569' }}>
-                  <ChevronDown size={14} /> Scroll to explore
-                </motion.div>
-              </motion.div>
+          {/* Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="flex gap-8 lg:gap-12 pt-8"
+          >
+            <div className="flex flex-col">
+              <p className="text-3xl lg:text-4xl font-bold text-cyan-400">100+</p>
+              <p className="text-gray-400 text-xs lg:text-sm mt-2">LeetCode Problems</p>
             </div>
-
-            {/* Stats Grid */}
-            <motion.div variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true }}
-              style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginTop: '80px', justifyContent: 'center' }}>
-              {STATS.map((stat, i) => <AnimatedCounter key={i} stat={stat} />)}
-            </motion.div>
-          </div>
-        </section>
-
-        <div style={S.sectionDivider} />
-
-        {/* ═══════════ EDUCATION ═══════════ */}
-        <section id="education" style={S.fullSection}>
-          <div style={{ ...S.container, width: '100%' }}>
-            <SectionTitle title="Education" icon={GraduationCap} subtitle="My academic journey & achievements" />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', maxWidth: '800px', margin: '0 auto', position: 'relative' }}>
-              <div className="timeline-connector" />
-              {[
-                { school: 'Institute of Aeronautical Engineering', degree: 'B.Tech in Computer Science & Engineering', period: 'Aug 2023 – Sep 2027', score: 'CGPA: 8.22', highlight: 'Current' },
-                { school: 'Narayana Junior College', degree: 'Intermediate MPC', period: 'June 2021 – May 2023', score: 'CGPA: 8.93', highlight: '' },
-                { school: "Dr KKR's Gowtham Concept School", degree: 'SSC', period: 'July 2016 – Aug 2021', score: 'CGPA: 10', highlight: 'Perfect Score' },
-              ].map((edu, idx) => (
-                <motion.div key={idx} variants={fadeUp} custom={idx} initial="hidden" whileInView="visible" viewport={{ once: true }}
-                  style={{ display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
-                  <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, zIndex: 2, boxShadow: '0 0 20px rgba(59,130,246,0.3)' }}>
-                    <GraduationCap size={20} style={{ color: '#fff' }} />
-                  </div>
-                  <div className="glass-card animated-border" style={{ flex: 1, borderRadius: '16px', padding: '28px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', marginBottom: '12px' }}>
-                      <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#fff' }}>{edu.school}</h3>
-                      {edu.highlight && <span style={{ fontSize: '0.7rem', color: '#fbbf24', fontWeight: 600, padding: '3px 10px', borderRadius: '8px', background: 'rgba(251,191,36,0.1)', border: '1px solid rgba(251,191,36,0.2)' }}>{edu.highlight}</span>}
-                    </div>
-                    <p style={{ fontSize: '0.95rem', fontWeight: 500, color: '#60a5fa', marginBottom: '8px' }}>{edu.degree}</p>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center' }}>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', color: '#64748b' }}><Calendar size={13} />{edu.period}</span>
-                      <span style={{ fontSize: '0.8rem', color: '#34d399', fontWeight: 600, padding: '3px 10px', borderRadius: '8px', background: 'rgba(16,185,129,0.1)' }}>{edu.score}</span>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+            <div className="flex flex-col">
+              <p className="text-3xl lg:text-4xl font-bold text-cyan-400">8.22</p>
+              <p className="text-gray-400 text-xs lg:text-sm mt-2">CGPA (B.Tech)</p>
             </div>
-          </div>
-        </section>
-
-        <div style={S.sectionDivider} />
-
-        {/* ═══════════ SKILLS ═══════════ */}
-        <section id="skills" style={{ ...S.fullSection, position: 'relative' }}>
-          <img src="/abstract-tech.png" alt="" className="section-bg-img" />
-          <div style={{ ...S.container, width: '100%', position: 'relative', zIndex: 1 }}>
-            <SectionTitle title="Technical Skills" icon={Server} subtitle="Technologies & tools I work with" />
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
-              {Object.entries(SKILLS).map(([category, { items, color, icon: CatIcon }], idx) => (
-                <motion.div key={category} variants={fadeUp} custom={idx} initial="hidden" whileInView="visible" viewport={{ once: true }}
-                  className="glass-card animated-border" style={{ borderRadius: '16px', padding: '28px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
-                    <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: `${color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <CatIcon size={18} style={{ color }} />
-                    </div>
-                    <h3 style={{ fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color }}>{category}</h3>
-                  </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                    {items.map((skill) => (<span key={skill} className="skill-badge">{skill}</span>))}
-                  </div>
-                </motion.div>
-              ))}
+            <div className="flex flex-col">
+              <p className="text-3xl lg:text-4xl font-bold text-cyan-400">2+</p>
+              <p className="text-gray-400 text-xs lg:text-sm mt-2">Years Experience</p>
             </div>
-          </div>
-        </section>
+          </motion.div>
+        </motion.div>
 
-        <div style={S.sectionDivider} />
+        {/* Right Image */}
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="flex items-center justify-center h-full"
+        >
+          <motion.div
+            animate={{ y: [0, -20, 0] }}
+            transition={{ repeat: Infinity, duration: 4 }}
+            className="relative w-full flex justify-center"
+          >
+            {/* Neon Glow Background */}
+            <div className="absolute -inset-4 rounded-2xl opacity-75 blur-xl" style={{
+              background: 'linear-gradient(135deg, #00d4ff, #0099ff)',
+              animation: 'pulse 2s ease-in-out infinite'
+            }} />
 
-        {/* ═══════════ EXPERIENCE ═══════════ */}
-        <section id="experience" style={S.fullSection}>
-          <div style={{ ...S.container, width: '100%' }}>
-            <SectionTitle title="Experience" icon={Briefcase} subtitle="Professional internships & work" />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', maxWidth: '900px', margin: '0 auto' }}>
-              {INTERNSHIPS.map((intern, idx) => (
-                <motion.div key={idx} variants={fadeUp} custom={idx} initial="hidden" whileInView="visible" viewport={{ once: true }}
-                  className="glass-card animated-border" style={{ borderRadius: '16px', padding: '32px', position: 'relative', overflow: 'hidden' }}>
-                  <div style={{ position: 'absolute', top: 0, left: 0, width: '4px', height: '100%', background: 'linear-gradient(to bottom, #3b82f6, #8b5cf6)' }} />
-                  <div style={{ position: 'absolute', top: '16px', right: '16px', width: '60px', height: '60px', borderRadius: '12px', background: 'rgba(59,130,246,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Briefcase size={28} style={{ color: 'rgba(59,130,246,0.3)' }} />
-                  </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '8px', marginBottom: '20px' }}>
-                    <div>
-                      <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#fff', marginBottom: '6px' }}>{intern.role}</h3>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                        <span style={{ fontSize: '0.95rem', fontWeight: 600, color: '#60a5fa' }}>{intern.company}</span>
-                        <span style={{ color: '#475569' }}>·</span>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem', color: '#64748b' }}><MapPin size={12} />{intern.location}</span>
-                      </div>
-                    </div>
-                    <span className="glass" style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', color: '#64748b', padding: '6px 14px', borderRadius: '9999px', height: 'fit-content' }}>
-                      <Calendar size={12} />{intern.period}
-                    </span>
-                  </div>
-                  <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                    {intern.points.map((point, i) => (
-                      <li key={i} style={{ display: 'flex', gap: '12px', fontSize: '0.9rem', color: '#cbd5e1', marginBottom: '12px' }}>
-                        <span style={{ color: '#3b82f6', flexShrink: 0, marginTop: '4px' }}>▸</span>
-                        <span style={{ lineHeight: 1.8 }}>{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              ))}
+            {/* Image Container */}
+            <div className="relative rounded-2xl overflow-hidden border-2 border-cyan-500/50 w-64 sm:w-72 lg:w-80 h-80 sm:h-96 bg-gradient-to-br from-cyan-500/10 to-blue-500/10">
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2F11ba7d5ce9344242b5846257f257d0e8%2Fe110f31e4c684e96aecdb9a6bbf82078?format=webp&width=800&height=1200"
+                alt="Developer"
+                className="w-full h-full object-cover"
+              />
             </div>
-          </div>
-        </section>
-
-        <div style={S.sectionDivider} />
-
-        {/* ═══════════ PROJECTS ═══════════ */}
-        <section id="projects" style={{ ...S.fullSection, position: 'relative' }}>
-          <img src="/coding-workspace.png" alt="" className="section-bg-img" />
-          <div style={{ ...S.container, width: '100%', position: 'relative', zIndex: 1 }}>
-            <SectionTitle title="Projects" icon={FolderGit2} subtitle="Noteworthy things I've built" />
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '28px' }}>
-              {PROJECTS.map((project, idx) => {
-                const IconComp = project.icon;
-                return (
-                  <motion.div key={idx} variants={fadeUp} custom={idx} initial="hidden" whileInView="visible" viewport={{ once: true }}
-                    className="glass-card animated-border" whileHover={{ scale: 1.03, y: -4 }}
-                    style={{ borderRadius: '16px', padding: '32px', display: 'flex', flexDirection: 'column', height: '100%', transition: 'transform 0.3s ease' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
-                      <div style={{ width: '52px', height: '52px', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: `${project.color}18`, color: project.color }}>
-                        <IconComp size={24} />
-                      </div>
-                      <motion.div whileHover={{ rotate: 45 }}><ArrowUpRight size={20} style={{ color: '#475569' }} /></motion.div>
-                    </div>
-                    <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#fff', marginBottom: '4px' }}>{project.name}</h3>
-                    <p style={{ fontSize: '0.9rem', fontWeight: 500, color: project.color, marginBottom: '14px' }}>{project.subtitle}</p>
-                    <p style={{ fontSize: '0.9rem', color: '#94a3b8', lineHeight: 1.8, flex: 1, marginBottom: '20px' }}>{project.desc}</p>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: 'auto' }}>
-                      {project.stack.map((tech) => (
-                        <span key={tech} style={{ fontSize: '0.75rem', fontWeight: 500, padding: '5px 12px', borderRadius: '9999px', background: `${project.color}15`, color: project.color }}>{tech}</span>
-                      ))}
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        <div style={S.sectionDivider} />
-
-        {/* ═══════════ CERTIFICATIONS ═══════════ */}
-        <section id="certifications" style={S.fullSection}>
-          <div style={{ ...S.container, width: '100%' }}>
-            <SectionTitle title="Certifications" icon={Award} subtitle="Licenses & professional credentials" />
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '20px', maxWidth: '900px', margin: '0 auto' }}>
-              {CERTS.map((cert, idx) => (
-                <motion.div key={idx} variants={fadeUp} custom={idx * 0.5} initial="hidden" whileInView="visible" viewport={{ once: true }}
-                  className="glass-card animated-border" whileHover={{ scale: 1.02 }}
-                  style={{ borderRadius: '14px', padding: '20px', display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
-                  <div style={{ width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, background: `${cert.color}12` }}>
-                    <ShieldCheck size={18} style={{ color: cert.color }} />
-                  </div>
-                  <div>
-                    <p style={{ fontSize: '0.9rem', color: '#e2e8f0', fontWeight: 600, lineHeight: 1.5 }}>{cert.name}</p>
-                    <p style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '6px' }}>Issued by <span style={{ color: cert.color, fontWeight: 500 }}>{cert.org}</span></p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <div style={S.sectionDivider} />
-
-        {/* ═══════════ CONTACT ═══════════ */}
-        <section id="contact" style={S.fullSection}>
-          <div style={{ ...S.container, maxWidth: '700px', textAlign: 'center' }}>
-            <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-              <div className="glass-card" style={{ width: '64px', height: '64px', borderRadius: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 28px', color: '#60a5fa' }}>
-                <Send size={28} />
-              </div>
-              <h2 style={{ fontSize: 'clamp(2rem, 5vw, 2.75rem)', fontWeight: 800, color: '#fff', marginBottom: '16px' }}>Let's Connect</h2>
-              <p style={{ color: '#94a3b8', fontSize: '1rem', lineHeight: 1.8, marginBottom: '48px', maxWidth: '500px', margin: '0 auto 48px' }}>
-                I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision. Feel free to reach out!
-              </p>
-
-              <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '16px', marginBottom: '48px' }}>
-                <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="mailto:23951A050P@iare.ac.in"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '14px 28px', borderRadius: '14px', fontSize: '0.95rem', fontWeight: 600, color: '#fff', textDecoration: 'none', background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)', boxShadow: '0 4px 24px rgba(59,130,246,0.3)' }}>
-                  <Mail size={18} /> Send an Email
-                </motion.a>
-                <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="#" className="glass"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '14px 28px', borderRadius: '14px', fontSize: '0.95rem', fontWeight: 600, color: '#cbd5e1', textDecoration: 'none' }}>
-                  <Linkedin size={18} /> Connect on LinkedIn
-                </motion.a>
-              </div>
-
-              <div className="glass-card" style={{ borderRadius: '16px', padding: '32px', maxWidth: '500px', margin: '0 auto' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  {[
-                    { icon: <Mail size={16} />, label: 'Email', value: '23951A050P@iare.ac.in' },
-                    { icon: <Phone size={16} />, label: 'Phone', value: '+91 9493086760' },
-                    { icon: <MapPin size={16} />, label: 'Location', value: 'Hyderabad, India' },
-                  ].map((item, i) => (
-                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px', borderRadius: '10px', background: 'rgba(255,255,255,0.02)' }}>
-                      <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(59,130,246,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#60a5fa', flexShrink: 0 }}>{item.icon}</div>
-                      <div style={{ textAlign: 'left' }}>
-                        <p style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{item.label}</p>
-                        <p style={{ fontSize: '0.85rem', color: '#e2e8f0', fontWeight: 500 }}>{item.value}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* FOOTER */}
-        <footer style={{ padding: '48px 0', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-          <div style={{ ...S.container, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}>
-            <p style={{ fontSize: '0.875rem', color: '#475569' }}>Designed & Built by <span className="text-gradient" style={{ fontWeight: 600 }}>Gurram Anand Sagar</span></p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              {[{ icon: <Mail size={16} />, href: 'mailto:23951A050P@iare.ac.in' }, { icon: <Github size={16} />, href: '#' }, { icon: <Linkedin size={16} />, href: '#' }].map((s, i) => (
-                <a key={i} href={s.href} style={{ color: '#475569', transition: 'color 0.3s' }}>{s.icon}</a>
-              ))}
-            </div>
-            <p style={{ fontSize: '0.75rem', color: '#334155' }}>© {new Date().getFullYear()} All rights reserved.</p>
-          </div>
-        </footer>
+          </motion.div>
+        </motion.div>
       </div>
 
       <style>{`
-        .desktop-nav { display: flex !important; }
-        .mobile-toggle { display: none !important; }
-        @media (max-width: 768px) {
-          .desktop-nav { display: none !important; }
-          .mobile-toggle { display: block !important; }
+        @keyframes pulse {
+          0%, 100% { opacity: 0.75; }
+          50% { opacity: 1; }
+        }
+      `}</style>
+    </section>
+  );
+}
+
+function About() {
+  return (
+    <section id="about" className="w-full py-20 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-7xl mx-auto">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-4xl lg:text-5xl font-bold text-white mb-16 text-center"
+        >
+          About <span className="text-cyan-400">Me</span>
+        </motion.h2>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          {/* Left Content */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="space-y-6"
+          >
+            <p className="text-gray-300 text-base lg:text-lg leading-relaxed">
+              I'm a B.Tech Computer Science Engineering student from Institute of Aeronautical Engineering, passionate about building scalable web applications and solving complex problems.
+            </p>
+            <p className="text-gray-300 text-base lg:text-lg leading-relaxed">
+              With hands-on experience in full-stack development, I specialize in creating responsive and user-friendly digital experiences. I'm certified in Oracle Cloud and Azure, with expertise in both frontend and backend technologies.
+            </p>
+            <p className="text-gray-300 text-base lg:text-lg leading-relaxed">
+              I love collaborating with teams, learning new technologies, and contributing to projects that make a real impact.
+            </p>
+          </motion.div>
+
+          {/* Right Stats */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="space-y-5"
+          >
+            {[
+              { label: 'Education', value: 'B.Tech CSE (IARE)' },
+              { label: 'Location', value: 'Hyderabad, India' },
+              { label: 'Experience', value: '2+ Internships Completed' },
+              { label: 'Certifications', value: '6+ Professional Certs' },
+            ].map((item, idx) => (
+              <motion.div
+                key={idx}
+                whileHover={{ x: 10 }}
+                className="p-4 rounded-lg border border-cyan-500/30 bg-cyan-500/5 backdrop-blur-md hover:bg-cyan-500/10 transition-all"
+              >
+                <p className="text-cyan-400 text-sm font-semibold">{item.label}</p>
+                <p className="text-white text-lg">{item.value}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Skills() {
+  return (
+    <section id="skills" className="w-full py-20 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-7xl mx-auto">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-4xl lg:text-5xl font-bold text-white mb-16 text-center"
+        >
+          Technical <span className="text-cyan-400">Skills</span>
+        </motion.h2>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+          {SKILLS.map((skill, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              whileHover={{
+                scale: 1.05,
+                boxShadow: '0 0 30px rgba(0, 212, 255, 0.3)',
+              }}
+              className="p-6 rounded-lg border border-cyan-500/30 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-md hover:border-cyan-500/50 transition-all cursor-pointer group"
+            >
+              <p className="text-4xl mb-3 group-hover:scale-110 transition-transform">{skill.icon}</p>
+              <p className="text-white font-semibold">{skill.name}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Projects() {
+  return (
+    <section id="projects" className="w-full py-20 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-7xl mx-auto">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-4xl lg:text-5xl font-bold text-white mb-16 text-center"
+        >
+          Featured <span className="text-cyan-400">Projects</span>
+        </motion.h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {PROJECTS.map((project, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.2 }}
+              whileHover={{ y: -10 }}
+              className="group rounded-lg border border-cyan-500/30 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-md p-6 lg:p-8 hover:border-cyan-500/50 transition-all overflow-hidden relative flex flex-col h-full"
+            >
+              {/* Glow Effect */}
+              <div className="absolute -inset-32 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 blur-3xl transition-opacity duration-300 -z-10" />
+
+              <h3 className="text-xl lg:text-2xl font-bold text-white mb-2">{project.name}</h3>
+              <p className="text-cyan-400 text-xs lg:text-sm font-semibold mb-4">{project.subtitle}</p>
+              <p className="text-gray-300 text-sm lg:text-base mb-6 leading-relaxed flex-grow">{project.desc}</p>
+
+              {/* Tech Stack */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                {project.stack.map((tech) => (
+                  <span
+                    key={tech}
+                    className="text-xs px-2.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+
+              {/* Buttons */}
+              <div className="flex gap-4 mt-auto">
+                <motion.a
+                  href={project.github}
+                  whileHover={{ scale: 1.05 }}
+                  className="flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 transition-colors"
+                >
+                  <Github size={16} /> GitHub
+                </motion.a>
+                <motion.a
+                  href={project.demo}
+                  whileHover={{ scale: 1.05 }}
+                  className="flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 transition-colors"
+                >
+                  <ExternalLink size={16} /> Demo
+                </motion.a>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Contact() {
+  const [formData, setFormData] = useState({ email: '', message: '' });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission here
+    console.log(formData);
+  };
+
+  return (
+    <section id="contact" className="w-full py-20 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-2xl mx-auto">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-4xl lg:text-5xl font-bold text-white mb-6 text-center"
+        >
+          Get in <span className="text-cyan-400">Touch</span>
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-gray-400 text-center mb-12 text-base lg:text-lg"
+        >
+          Let's discuss your next project or opportunity
+        </motion.p>
+
+        <motion.form
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          onSubmit={handleSubmit}
+          className="space-y-6 p-6 lg:p-8 rounded-lg border border-cyan-500/30 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-md w-full"
+        >
+          <div className="space-y-2">
+            <label htmlFor="email" className="block text-white text-sm lg:text-base font-semibold">
+              Email Address
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="w-full px-4 py-3 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all text-sm lg:text-base"
+              placeholder="your@email.com"
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="message" className="block text-white text-sm lg:text-base font-semibold">
+              Message
+            </label>
+            <textarea
+              id="message"
+              value={formData.message}
+              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+              className="w-full px-4 py-3 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all resize-none text-sm lg:text-base"
+              placeholder="Your message here..."
+              rows="6"
+              required
+            />
+          </div>
+
+          <motion.button
+            whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(0, 212, 255, 0.5)' }}
+            whileTap={{ scale: 0.95 }}
+            type="submit"
+            className="w-full py-3 px-6 rounded-lg font-semibold bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:from-cyan-600 hover:to-blue-600 transition-all"
+          >
+            Send Message
+          </motion.button>
+        </motion.form>
+
+        {/* Social Links */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="flex justify-center gap-6 lg:gap-8 mt-12"
+        >
+          {[
+            { icon: <Github size={24} />, href: '#', label: 'GitHub' },
+            { icon: <Linkedin size={24} />, href: '#', label: 'LinkedIn' },
+            { icon: <Mail size={24} />, href: 'mailto:23951A050P@iare.ac.in', label: 'Email' },
+          ].map((link, idx) => (
+            <motion.a
+              key={idx}
+              href={link.href}
+              whileHover={{ scale: 1.2, color: '#00d4ff' }}
+              className="text-gray-400 hover:text-cyan-400 transition-colors"
+              title={link.label}
+            >
+              {link.icon}
+            </motion.a>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="w-full border-t border-cyan-500/20 py-8 px-4 sm:px-6 lg:px-8" style={{ background: 'rgba(11, 15, 20, 0.5)' }}>
+      <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+        <p className="text-gray-400 text-sm lg:text-base text-center md:text-left">
+          Designed & Built by <span className="text-cyan-400 font-semibold">Anand Sagar Gurram</span>
+        </p>
+        <p className="text-gray-500 text-xs lg:text-sm">© {new Date().getFullYear()} All rights reserved.</p>
+      </div>
+    </footer>
+  );
+}
+
+// ========== MAIN APP ==========
+export default function App() {
+  return (
+    <div style={{ background: '#0b0f14' }} className="min-h-screen text-white overflow-x-hidden">
+      <Navbar />
+      <Hero />
+      <About />
+      <Skills />
+      <Projects />
+      <Contact />
+      <Footer />
+
+      <style>{`
+        * {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(0, 212, 255, 0.3) rgba(11, 15, 20, 0.5);
+        }
+        *::-webkit-scrollbar {
+          width: 8px;
+        }
+        *::-webkit-scrollbar-track {
+          background: rgba(11, 15, 20, 0.5);
+        }
+        *::-webkit-scrollbar-thumb {
+          background: rgba(0, 212, 255, 0.3);
+          border-radius: 4px;
+        }
+        *::-webkit-scrollbar-thumb:hover {
+          background: rgba(0, 212, 255, 0.5);
         }
       `}</style>
     </div>
   );
 }
-
-export default App;
