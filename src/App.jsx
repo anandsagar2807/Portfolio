@@ -163,24 +163,24 @@ function Navbar() {
 
 function Hero() {
   return (
-    <section id="home" className="relative w-full flex items-center justify-center pt-32 pb-16 md:py-40 overflow-hidden">
+    <section id="home" className="relative w-full flex items-center justify-center min-h-screen pt-24 pb-16 md:pt-32 md:pb-20 overflow-hidden">
       {/* Gradient Background Elements */}
-      <div className="absolute top-20 -left-40 w-80 h-80 rounded-full blur-3xl opacity-25 animate-pulse" style={{ background: `${COLORS.primary}40` }} />
+      <div className="absolute top-32 -left-40 w-80 h-80 rounded-full blur-3xl opacity-25 animate-pulse" style={{ background: `${COLORS.primary}40` }} />
       <div className="absolute bottom-40 -right-40 w-80 h-80 rounded-full blur-3xl opacity-25 animate-pulse" style={{ background: `${COLORS.secondary}40` }} />
 
-      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 px-4 sm:px-6 lg:px-12 relative z-10">
+      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 px-4 sm:px-6 lg:px-12 relative z-10 items-center">
         {/* Left Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="flex flex-col justify-center space-y-8"
+          className="flex flex-col justify-center space-y-7"
         >
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2 w-fit px-4 py-2.5 rounded-full border transition-all"
+            className="inline-flex items-center justify-start gap-2 w-fit px-4 py-2.5 rounded-full border transition-all"
             style={{ 
               background: `${COLORS.primary}15`,
               borderColor: `${COLORS.primary}40`
@@ -196,16 +196,19 @@ function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
+            className="space-y-3"
           >
-            <p className="text-sm font-mono font-bold mb-3" style={{ color: COLORS.secondary }}>
+            <p className="text-sm font-mono font-bold" style={{ color: COLORS.secondary }}>
               &gt; Hello, World
             </p>
-            <h1 className="text-6xl md:text-7xl font-black leading-tight tracking-tight mb-2" style={{ color: COLORS.text }}>
-              I'm <span style={{ color: COLORS.primary }}>Anand</span>
-            </h1>
-            <h2 className="text-5xl md:text-6xl font-black leading-tight tracking-tight" style={{ color: COLORS.text }}>
-              Software Developer
-            </h2>
+            <div>
+              <h1 className="text-6xl md:text-7xl font-black leading-tight tracking-tight" style={{ color: COLORS.text }}>
+                I'm <span style={{ color: COLORS.primary }}>Anand</span>
+              </h1>
+              <h2 className="text-5xl md:text-6xl font-black leading-tight tracking-tight" style={{ color: COLORS.text }}>
+                Software Developer
+              </h2>
+            </div>
           </motion.div>
 
           <motion.p
@@ -233,7 +236,7 @@ function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="flex gap-4 flex-wrap pt-4"
+            className="flex gap-4 flex-wrap pt-2"
           >
             <motion.a
               href="#projects"
@@ -269,7 +272,7 @@ function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
-            className="flex gap-8 md:gap-12 pt-8"
+            className="flex gap-8 md:gap-12 pt-6"
           >
             {[
               { value: '100+', label: 'Problems Solved' },
@@ -289,7 +292,7 @@ function Hero() {
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="flex items-center justify-center h-full"
+          className="flex items-center justify-center h-full hidden lg:flex"
         >
           <motion.div
             animate={{ y: [0, -20, 0] }}
@@ -345,7 +348,7 @@ function About() {
   return (
     <section id="about" className="w-full relative py-24 md:py-32 px-4 sm:px-6 lg:px-12">
       {/* Background Glow */}
-      <div className="absolute top-40 right-0 w-96 h-96 rounded-full blur-3xl opacity-20 pointer-events-none" style={{ background: `${COLORS.secondary}40` }} />
+      <div className="absolute top-32 right-0 w-96 h-96 rounded-full blur-3xl opacity-20 pointer-events-none" style={{ background: `${COLORS.secondary}40` }} />
 
       <div className="w-full max-w-7xl mx-auto relative z-10">
         <motion.h2
@@ -358,7 +361,7 @@ function About() {
           About <span style={{ color: COLORS.primary }}>Me</span>
         </motion.h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center lg:items-start">
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -422,7 +425,7 @@ function Skills() {
   return (
     <section id="skills" className="w-full relative py-24 md:py-32 px-4 sm:px-6 lg:px-12">
       {/* Background Glow */}
-      <div className="absolute top-20 -left-40 w-80 h-80 rounded-full blur-3xl opacity-20 pointer-events-none" style={{ background: `${COLORS.primary}40` }} />
+      <div className="absolute top-32 -left-40 w-80 h-80 rounded-full blur-3xl opacity-20 pointer-events-none" style={{ background: `${COLORS.primary}40` }} />
 
       <div className="w-full max-w-7xl mx-auto relative z-10">
         <motion.h2
@@ -440,7 +443,7 @@ function Skills() {
           whileInView="visible"
           viewport={{ once: true }}
           variants={containerVariants}
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6"
         >
           {SKILLS.map((skill, idx) => (
             <motion.div
@@ -475,7 +478,7 @@ function Projects() {
   return (
     <section id="projects" className="w-full relative py-24 md:py-32 px-4 sm:px-6 lg:px-12">
       {/* Background Glow */}
-      <div className="absolute top-40 -right-40 w-96 h-96 rounded-full blur-3xl opacity-20 pointer-events-none" style={{ background: `${COLORS.secondary}40` }} />
+      <div className="absolute top-32 -right-40 w-96 h-96 rounded-full blur-3xl opacity-20 pointer-events-none" style={{ background: `${COLORS.secondary}40` }} />
 
       <div className="w-full max-w-7xl mx-auto relative z-10">
         <motion.h2
@@ -493,7 +496,7 @@ function Projects() {
           whileInView="visible"
           viewport={{ once: true }}
           variants={containerVariants}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-6 lg:gap-7"
         >
           {PROJECTS.map((project, idx) => (
             <motion.div
@@ -578,9 +581,9 @@ function Contact() {
   return (
     <section id="contact" className="w-full relative py-24 md:py-32 px-4 sm:px-6 lg:px-12">
       {/* Background Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full blur-3xl opacity-20 pointer-events-none" style={{ background: `${COLORS.primary}40` }} />
+      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full blur-3xl opacity-20 pointer-events-none" style={{ background: `${COLORS.primary}40` }} />
 
-      <div className="w-full max-w-2xl mx-auto relative z-10">
+      <div className="w-full max-w-2xl mx-auto relative z-10 px-4 sm:px-6 md:px-8">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -612,7 +615,7 @@ function Contact() {
             background: `${COLORS.primary}10`,
           }}
         >
-          <div className="space-y-2 relative z-10">
+          <div className="space-y-3 relative z-10">
             <label htmlFor="email" className="block text-sm md:text-base font-bold" style={{ color: COLORS.text }}>
               Email Address
             </label>
@@ -621,21 +624,19 @@ function Contact() {
               id="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              whileFocus={{ scale: 1.02 }}
+              whileFocus={{ scale: 1.01 }}
               className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all text-sm md:text-base font-medium"
               style={{
                 background: `${COLORS.primary}10`,
                 borderColor: `${COLORS.primary}40`,
                 color: COLORS.text,
-                focusBorderColor: `${COLORS.primary}60`,
-                focusRingColor: `${COLORS.primary}20`
               }}
               placeholder="your@email.com"
               required
             />
           </div>
 
-          <div className="space-y-2 relative z-10">
+          <div className="space-y-3 relative z-10">
             <label htmlFor="message" className="block text-sm md:text-base font-bold" style={{ color: COLORS.text }}>
               Message
             </label>
@@ -643,7 +644,7 @@ function Contact() {
               id="message"
               value={formData.message}
               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-              whileFocus={{ scale: 1.02 }}
+              whileFocus={{ scale: 1.01 }}
               className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all resize-none text-sm md:text-base font-medium"
               style={{
                 background: `${COLORS.primary}10`,
@@ -657,7 +658,7 @@ function Contact() {
           </div>
 
           <motion.button
-            whileHover={{ scale: 1.05, y: -3 }}
+            whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             type="submit"
             className="w-full py-3 px-6 rounded-lg font-bold text-white transition-all shadow-lg relative z-10"
@@ -703,8 +704,8 @@ function Contact() {
 function Footer() {
   return (
     <footer className="w-full border-t py-8 px-4 sm:px-6 lg:px-12" style={{ borderColor: `${COLORS.primary}15`, background: COLORS.bg }}>
-      <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-        <p className="text-sm md:text-base text-center md:text-left font-medium" style={{ color: COLORS.textMuted }}>
+      <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row justify-center md:justify-between items-center gap-4 md:gap-6">
+        <p className="text-xs sm:text-sm md:text-base text-center md:text-left font-medium" style={{ color: COLORS.textMuted }}>
           Designed & Built by <span className="font-bold" style={{ color: COLORS.primary }}>Anand Sagar Gurram</span>
         </p>
         <p className="text-xs md:text-sm" style={{ color: COLORS.textMuted }}>© {new Date().getFullYear()} All rights reserved.</p>
