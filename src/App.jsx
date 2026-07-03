@@ -11,6 +11,7 @@ import {
 import emailjs from "@emailjs/browser";
 import "./App.css";
 import ResumePage from "./ResumePage";
+import profilePhoto from "./assets/mypicture.png";
 
 /* ═══════════════════════════════════════════════════════
    DATA
@@ -475,7 +476,7 @@ function HeroSection({ onResumeOpen }) {
             <div className="hero-photo-ring" />
             {/* The portrait */}
             <div className="hero-photo-frame">
-              <img src="/mypicture.png" alt="Gurram Anand Sagar — Full Stack Developer" className="hero-photo" />
+              <img src={profilePhoto} alt="Gurram Anand Sagar — Full Stack Developer" className="hero-photo" />
             </div>
             {/* Availability pill */}
             <motion.span className="hero-avail-pill"
